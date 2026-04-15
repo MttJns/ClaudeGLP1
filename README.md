@@ -1,12 +1,12 @@
 # ClaudeGLP1 — Claude Get Lean Protocol 1
 
-A Claude Code skill that audits your Claude environment, estimates how much context window you're burning at session open, and guides you through an interactive cleanup — with a full backup and one-command restore.
+A 5 minute Claude Code skill that audits your Claude environment, estimates how much context window you're burning at session open, and guides you through an interactive cleanup — with a full backup and one-command restore.
 
 ---
 
 ## What it does
 
-Every Claude Code session loads a surprising amount of content before you type anything: CLAUDE.md files, skills, hooks, memory files, MCP server configs, and system-injected tool lists. ClaudeGLP1 measures all of it, flags what's redundant or misplaced, and helps you trim it down — without ever making a change you didn't explicitly approve.
+If you've been trying out agent tools like /GSD and others, your Claude is probably wasting tons of tokens. Each Claude Code session loads a surprising amount of content before you type anything: CLAUDE.md files, skills, hooks, memory files, MCP server configs, and system-injected tool lists. ClaudeGLP1 measures all of it, flags what's redundant or misplaced, and helps you trim it down — it takes about 5 minutes.
 
 **The 8 phases:**
 
