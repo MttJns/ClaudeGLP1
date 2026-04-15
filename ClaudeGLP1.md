@@ -37,17 +37,13 @@ Wait for the user to confirm before proceeding to Phase 1.
 
 ## Phase 1 — Discovery
 
-Collect the following in parallel:
+Collect in parallel:
 
-1. **CLAUDE.md hierarchy** — find all CLAUDE.md files from `~/.claude/CLAUDE.md` down through the current working directory and any subdirectories. Read each one and note its path, size in chars, and a one-line summary of its contents.
-
-2. **Skills & commands** — list all files in `~/.claude/commands/` and `~/.claude/skills/` (if it exists). For each, note the filename and approximate size.
-
-3. **Plugins & MCP servers** — read `~/.claude/settings.json` and any project-level settings files. List any MCP servers, plugins, or extensions configured.
-
-4. **Hooks** — list all hooks configured in settings files. Note which ones inject output into the conversation (these cost tokens every turn).
-
-5. **Memory files** — find `memory/recent-memory.md`, `memory/long-term-memory.md`, `memory/project-memory.md` relative to the working directory. Note size of each in chars.
+1. All CLAUDE.md files: `~/.claude/CLAUDE.md` + cwd and subdirs. Path, char count, one-line summary.
+2. All files in `~/.claude/commands/` and `~/.claude/skills/` (if exists). Filename, char count.
+3. MCP servers, plugins, extensions from `~/.claude/settings.json` and any project settings files.
+4. All configured hooks. Flag any that inject output into the conversation (per-turn token cost).
+5. `memory/recent-memory.md`, `memory/long-term-memory.md`, `memory/project-memory.md` relative to cwd. Char count each.
 
 ---
 
@@ -59,8 +55,8 @@ Present a formatted table estimating token cost of each component loaded at sess
 |---|---|---|---|
 | Global CLAUDE.md | ~/.claude/CLAUDE.md | ... | ... |
 | Vault/Project CLAUDE.md | ... | ... | ... |
-| Deferred tools list | system-injected | ~1,800 | ~450 |
-| Skills list (system-reminder) | system-injected | ~1,400 | ~350 |
+| Deferred tools list | system-injected | measure | measure |
+| Skills list (system-reminder) | system-injected | measure | measure |
 | Memory: recent | memory/recent-memory.md | ... | ... |
 | Hook outputs (per turn) | hooks | ... | ... |
 | currentDate injection | system-injected | ~100 | ~25 |
@@ -72,20 +68,7 @@ Then show: **"This session opened at approximately X tokens (~Y% of a 200k conte
 
 ## Phase 3 — Recommendations
 
-Analyze what was found and produce a prioritized list of recommendations. Group them:
-
-**Quick wins (remove/trim now):**
-- Unused skills in `~/.claude/commands/` that haven't been invoked recently or serve no active purpose
-- Placeholder content in CLAUDE.md files (empty tables, `*(add others)*` rows, stub sections)
-- Hooks that inject verbose output every turn when `"verbose": true` could be disabled instead
-- Memory files that are empty or contain only boilerplate
-
-**Structural improvements:**
-- Content in a CLAUDE.md that belongs at a higher or lower level in the hierarchy
-- Duplicated rules across multiple CLAUDE.md levels
-- MCP servers or plugins configured but not actively used
-
-For each recommendation, show estimated token savings.
+Analyze what was found and produce a prioritized list of recommendations, grouped by impact. For each item, show estimated token savings. Focus on: unused or redundant content, placeholder/boilerplate, misplaced rules, per-turn hook verbosity, and inactive MCP servers or plugins.
 
 ---
 
@@ -130,9 +113,8 @@ After cleanup, display the updated CLAUDE.md hierarchy as an org chart using pla
 
 ```
 ~/.claude/CLAUDE.md           (global)
-└── vault/vaultmjjones/CLAUDE.md    (vault)
-    ├── projectA/CLAUDE.md          (project)
-    └── projectB/CLAUDE.md          (project)
+└── <cwd-parent>/CLAUDE.md         (intermediate, if present)
+    └── <cwd>/CLAUDE.md            (project)
 ```
 
 For each node show: path, size in chars, and a one-line summary of scope.
@@ -141,16 +123,7 @@ For each node show: path, size in chars, and a one-line summary of scope.
 
 ## Phase 7 — Before/After Report
 
-Produce a final comparison table:
-
-| Component | Before (tokens) | After (tokens) | Saved |
-|---|---|---|---|
-| CLAUDE.md files (total) | | | |
-| Skills/commands | | | |
-| Memory files | | | |
-| Hook output (per turn) | | | |
-| **Session open total** | | | |
-| **Per-turn overhead** | | | |
+Using the Phase 2 baseline, re-measure each component after cleanup and produce a comparison table (Before / After / Saved) for: CLAUDE.md files, skills/commands, memory files, hook output per turn, session open total, and per-turn overhead.
 
 Follow with 3–5 bullet observations on what changed and why it matters for long sessions.
 
