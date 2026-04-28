@@ -2,6 +2,9 @@
 
 A 5 minute Claude Code skill that audits your Claude environment, estimates how much context window you're burning at session open, and guides you through an interactive cleanup — with a full backup and one-command restore.
 
+<img width="701" height="561" alt="image" src="https://github.com/user-attachments/assets/99201b6c-bba3-456e-a28b-52074ef95cbc" />
+
+
 ---
 
 ## What it does
